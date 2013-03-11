@@ -21,7 +21,10 @@ class Player
   			log "I'll walk forward."
 			warrior.walk!
 		end
-	else # it's not empty in front of us...
+	elsif warrior.feel.captive? # it's not empty in front of us...
+		log "Freeing the captive..."
+		warrior.rescue!
+	else
 		log "Attack!"
 		warrior.attack!
 	end
