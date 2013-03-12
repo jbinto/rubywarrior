@@ -115,7 +115,25 @@ class Player
 
   def must_shoot_wizard?
     strings_ahead = warrior.look.map {|thing| thing.to_s }
-    return strings_ahead.include?("Wizard") && !strings_ahead.include?("Captive")
+    
+    should_shoot = false 
+
+    log "ahead: #{strings_ahead}"
+
+    for tile in strings_ahead
+      if tile == "Wizard"
+        should_shoot = true   
+        break
+      elsif tile == "nothing"
+        next
+      else
+        break   # don't shoot anything
+      end
+    end
+
+    #return strings_ahead.include?("Wizard") && !strings_ahead.include?("Captive")
+
+    should_shoot
   end
 
 end
