@@ -4,7 +4,7 @@ class Player
 
   def initialize
   	@old_health = 20
-  	@direction = :backward
+  	@direction = :forward
   end
 
   def play_turn(warrior)
@@ -27,13 +27,14 @@ class Player
 			 walk!
 		end
 	elsif wall?
-		change_direction!
+		#hange_direction!
+    warrior.pivot!
 	elsif captive? # it's not empty in front of us...
 		log "Freeing the captive..."
 		rescue!
 	else
 		log "Attack!"
-		warrior.attack!
+		attack!
 	end
 
 	@old_health = warrior.health
