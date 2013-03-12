@@ -13,7 +13,11 @@ class Player
 
   	log "health: #{warrior.health}"
 
-  	if empty?
+    log "look: #{warrior.look[0].to_s}"
+  	if must_shoot_wizard?
+      log "Wizard (but no captive) ahead -- shoot!"
+      warrior.shoot!
+    elsif empty?
   		log "It's empty in the #{@direction.to_s} direction."
   		if just_got_shot? && not_enough_health_to_attack?
         log "I just got shot, and I don't have enough health to attack. Going backwards."
@@ -25,17 +29,17 @@ class Player
   		else
   			log "I'll walk #{@direction.to_s}."
 			 walk!
-		end
-	elsif wall?
-		#hange_direction!
-    warrior.pivot!
-	elsif captive? # it's not empty in front of us...
-		log "Freeing the captive..."
-		rescue!
-	else
-		log "Attack!"
-		attack!
-	end
+		  end
+  	elsif wall?
+  		#hange_direction!
+      warrior.pivot!
+  	elsif captive? # it's not empty in front of us...
+  		log "Freeing the captive..."
+  		rescue!
+  	else
+  		log "Attack!"
+  		attack!
+  	end
 
 	@old_health = warrior.health
   end
@@ -107,6 +111,11 @@ class Player
 
   def change_direction_to(direction)
     @direction = direction
+  end
+
+  def must_shoot_wizard?
+    strings_ahead = warrior.look.map {|thing| thing.to_s }
+    return strings_ahead.include?("Wizard") && !strings_ahead.include?("Captive")
   end
 
 end
